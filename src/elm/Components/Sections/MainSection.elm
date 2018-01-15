@@ -20,7 +20,7 @@ renderMain products =
 mainArea : List Product -> Html Msg
 mainArea products =
     div
-        [ gridContainerStyle ]
+        [ id "gridContainer" ]
         (List.map
             (\p ->
                 renderProduct p
@@ -36,7 +36,7 @@ renderProduct product =
         , bufferedContentStyle
         ]
         [ a
-            [ href ""
+            [ linkStyle
             , onClick (navigateToProduct product.pid)
             ]
             [ text product.name
@@ -65,9 +65,9 @@ renderStartPage =
             [ bufferedContentStyle
             ]
             [ h3 []
-                [ a [ onClick Login ] [ text "Have an account? " ]
+                [ a [ linkStyle, onClick Login ] [ text "Have an account? " ]
                 , a
-                    [ onClick goToRegister ]
+                    [ linkStyle, onClick goToRegister ]
                     [ text "Register to enjoy the benefits" ]
                 ]
             , text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."

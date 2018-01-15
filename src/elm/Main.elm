@@ -1,5 +1,6 @@
 module Main exposing (..)
 
+import Task exposing (succeed, perform)
 import Html.Styled exposing (..)
 import Navigation exposing (Location, newUrl)
 import UrlParser exposing (..)
@@ -127,7 +128,12 @@ update msg model =
                     { oldState | user = updatedUser }
             in
                 ( { model | state = newState }
-                , MockHttp.send config ProductsFetched getProducts
+                , Cmd.batch
+                    [ MockHttp.send config ProductsFetched getProducts
+                    , reverseRoute Products
+                        |> LinkTo
+                        |> msgToCmdMsg
+                    ]
                 )
 
         ProductsFetched (Ok result) ->
@@ -145,3 +151,9 @@ update msg model =
                     Debug.log "p " error
             in
                 model ! []
+
+
+msgToCmdMsg : Msg -> Cmd Msg
+msgToCmdMsg msg =
+    Task.succeed msg
+        |> Task.perform identity

@@ -41,7 +41,7 @@ centeredTextStyle =
 bufferedContentStyle : Attribute msg
 bufferedContentStyle =
     css
-        [ padding (px 35)
+        [ padding2 (px 5) (px 25)
         ]
 
 
@@ -162,6 +162,13 @@ showLogin =
         , alignItems flexEnd
         , displayFlex
         , justifyContent center
+        ]
+
+
+linkStyle : Attribute msg
+linkStyle =
+    css
+        [ cursor pointer
         ]
 
 
