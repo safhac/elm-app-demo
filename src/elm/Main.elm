@@ -9,6 +9,7 @@ import Routing.Routes exposing (..)
 import View exposing (..)
 import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State)
 import Server.GetData exposing (config, getProducts)
+import Helpers.Common exposing (..)
 
 
 main : Program Never Model Msg
@@ -19,48 +20,6 @@ main =
         , update = update
         , subscriptions = subscriptions
         }
-
-
-initialModel : Model
-initialModel =
-    { products = [ initialProduct ]
-    , state = initialState
-    }
-
-
-initialProduct : Product
-initialProduct =
-    { name = ""
-    , pid = 0
-    , price = 0
-    , linkUrl = ""
-    }
-
-
-initializeProduct : Types.ProductID -> Product
-initializeProduct pid =
-    { name = "Item " ++ toString pid
-    , pid = pid
-    , price = 9.99
-    , linkUrl = ""
-    }
-
-
-initialState : State
-initialState =
-    { user = initialUser
-    , currentPage = Home
-    }
-
-
-initialUser : User
-initialUser =
-    { loginStatus = LoggedOut
-    , name = "John"
-    , id = 836590
-    , email = "john@google.com"
-    , avatar = "head-659652_960_720.png"
-    }
 
 
 init : Location -> ( Model, Cmd Msg )
