@@ -1,6 +1,6 @@
 module Components.Sections.MainSection exposing (..)
 
-import Html.Styled exposing (Html, div, text, main_, img, h2, a)
+import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a)
 import Html.Styled.Attributes exposing (css, href, src, id)
 import Html.Styled.Events exposing (onClick)
 import Types exposing (..)
@@ -56,16 +56,29 @@ navigateToProduct pid =
         |> LinkTo
 
 
-renderStartPage : Html msg
+renderStartPage : Html Msg
 renderStartPage =
     div
         [ bufferedContentStyle ]
-        [ h2 [] [ text "Welcom" ]
+        [ h2 [] [ text "Welcome" ]
         , div
             [ bufferedContentStyle
             ]
-            [ text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." ]
+            [ h3 []
+                [ a [ onClick Login ] [ text "Have an account? " ]
+                , a
+                    [ onClick goToRegister ]
+                    [ text "Register to enjoy the benefits" ]
+                ]
+            , text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            ]
         ]
+
+
+goToRegister : Msg
+goToRegister =
+    reverseRoute Register
+        |> LinkTo
 
 
 renderUserPage : User -> Html msg

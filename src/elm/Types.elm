@@ -46,6 +46,7 @@ type Page
     | MyProfile
     | About
     | ProductDetails ProductID
+    | Register
     | UrlNotFound
 
 

@@ -23,6 +23,9 @@ reverseRoute page =
         About ->
             "/about"
 
+        Register ->
+            "/register"
+
         UrlNotFound ->
             "/404"
 
@@ -34,6 +37,7 @@ route =
         , map Products (s "products")
         , map MyProfile (s "myprofile")
         , map About (s "about")
+        , map Register (s "register")
         , map ProductDetails (s "product" </> int)
         , map UrlNotFound (s "404")
         ]
