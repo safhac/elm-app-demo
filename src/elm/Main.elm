@@ -111,6 +111,13 @@ update msg model =
             in
                 model ! []
 
+        Ordering product ->
+            ( model
+            , reverseRoute (Order product.pid)
+                |> LinkTo
+                |> msgToCmdMsg
+            )
+
 
 msgToCmdMsg : Msg -> Cmd Msg
 msgToCmdMsg msg =

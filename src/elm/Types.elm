@@ -14,6 +14,7 @@ type Msg
     | NavigateTo (Maybe Page)
     | Login
     | ProductsFetched (Result Http.Error (List Product))
+    | Ordering Product
 
 
 type alias Product =
@@ -46,6 +47,7 @@ type Page
     | MyProfile
     | About
     | ProductDetails ProductID
+    | Order OrderID
     | Register
     | UrlNotFound
 
@@ -58,3 +60,11 @@ type alias State =
 
 type alias ProductID =
     Int
+
+
+type alias OrderID =
+    Int
+
+
+type alias Order =
+    ()

@@ -8,6 +8,7 @@ import Styles.Styles exposing (..)
 import Routing.Routes exposing (reverseRoute)
 import Components.Sections.ProductDetails exposing (..)
 import Helpers.Common exposing (..)
+import Components.Pages.Orders exposing (..)
 
 
 renderMain : Page -> List Product -> Html Msg
@@ -59,7 +60,7 @@ renderProduct product =
             ]
             [ a
                 [ linkStyle
-                , onClick (navigateToProduct product.pid)
+                , onClick (attrToMsg <| ProductDetails product.pid)
                 ]
                 [ text product.name
                 , img
@@ -70,12 +71,6 @@ renderProduct product =
                 , text price
                 ]
             ]
-
-
-navigateToProduct : Int -> Msg
-navigateToProduct pid =
-    reverseRoute (ProductDetails pid)
-        |> LinkTo
 
 
 renderStartPage : Html Msg

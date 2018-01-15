@@ -23,6 +23,9 @@ reverseRoute page =
         About ->
             "/about"
 
+        Order orderId ->
+            "/confirmorder/" ++ (toString orderId)
+
         Register ->
             "/register"
 
@@ -37,6 +40,7 @@ route =
         , map Products (s "products")
         , map MyProfile (s "myprofile")
         , map About (s "about")
+        , map Order (s "order" </> int)
         , map Register (s "register")
         , map ProductDetails (s "product" </> int)
         , map UrlNotFound (s "404")

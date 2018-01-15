@@ -1,6 +1,7 @@
 module Helpers.Common exposing (..)
 
 import Types exposing (..)
+import Routing.Routes exposing (reverseRoute)
 
 
 initialModel : Model
@@ -48,3 +49,9 @@ initialUser =
 productsImageFolder : String
 productsImageFolder =
     "/static/img/products/"
+
+
+attrToMsg : Page -> Msg
+attrToMsg page =
+    reverseRoute page
+        |> LinkTo
