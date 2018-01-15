@@ -6,15 +6,26 @@ import Html.Styled.Events exposing (onClick)
 import Types exposing (..)
 import Styles.Styles exposing (..)
 import Routing.Routes exposing (reverseRoute)
+import Components.Sections.ProductDetails exposing (..)
 
 
-renderMain : List Product -> Html Msg
-renderMain products =
+renderMain : Page -> List Product -> Html Msg
+renderMain page products =
     main_
         [ centeredTextStyle
         , standardContainerStyle
         ]
-        [ mainArea products ]
+        [ case page of
+            Home ->
+                renderStartPage
+
+            ProductDetails pid ->
+                getProductById products pid
+                    |> renderProduct
+
+            _ ->
+                mainArea products
+        ]
 
 
 mainArea : List Product -> Html Msg
@@ -96,3 +107,42 @@ renderUserPage user =
 productsImageFolder : String
 productsImageFolder =
     "/static/img/products/"
+
+
+getProductById : List Product -> ProductID -> Product
+getProductById products pid =
+    let
+        maybeProduct =
+            find (\p -> p.pid == pid) products
+
+        product =
+            case maybeProduct of
+                Nothing ->
+                    productNotFound
+
+                Just product ->
+                    product
+    in
+        product
+
+
+find : (a -> Bool) -> List a -> Maybe a
+find predicate list =
+    case list of
+        [] ->
+            Nothing
+
+        first :: rest ->
+            if predicate first then
+                Just first
+            else
+                find predicate rest
+
+
+productNotFound : Product
+productNotFound =
+    { name = ""
+    , pid = 0
+    , price = 0
+    , linkUrl = ""
+    }

@@ -14,7 +14,7 @@ view { products, state } =
         [ renderHeader state
         , case state.user.loginStatus of
             LoggedIn ->
-                renderMain products
+                renderMain state.currentPage products
 
             _ ->
                 renderStartPage
