@@ -1,7 +1,8 @@
 module Components.Sections.MainSection exposing (..)
 
-import Html.Styled exposing (Html, div, text, main_, img, h2)
+import Html.Styled exposing (Html, div, text, main_, img, h2, a)
 import Html.Styled.Attributes exposing (css, href, src, id)
+import Html.Styled.Events exposing (onClick)
 import Types exposing (..)
 import Styles.Styles exposing (..)
 
@@ -27,18 +28,25 @@ mainArea products =
         )
 
 
-renderProduct : Product -> Html msg
+renderProduct : Product -> Html Msg
 renderProduct product =
     div
         [ standardContainerStyle
         , bufferedContentStyle
         ]
-        [ img
-            [ src product.linkUrl
-            , productIconStyle
+        [ a
+            [ href ""
+            , onClick
+                |> NavigateTo (ProductDetails product.pid)
             ]
-            []
-        , text product.name
+            [ text product.name
+            , img
+                [ src (productsImageFolder ++ product.linkUrl)
+                , productIconStyle
+                ]
+                []
+            , text (toString product.price)
+            ]
         ]
 
 
@@ -64,3 +72,8 @@ renderUserPage user =
             ]
             [ text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." ]
         ]
+
+
+productsImageFolder : String
+productsImageFolder =
+    "/static/img/products/"
