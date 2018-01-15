@@ -22,7 +22,7 @@ renderMain page products =
 
             ProductDetails pid ->
                 getProductById products pid
-                    |> renderProduct
+                    |> renderProductDetails
 
             _ ->
                 mainArea products
@@ -43,23 +43,33 @@ mainArea products =
 
 renderProduct : Product -> Html Msg
 renderProduct product =
-    div
-        [ standardContainerStyle
-        , bufferedContentStyle
-        ]
-        [ a
-            [ linkStyle
-            , onClick (navigateToProduct product.pid)
+    let
+        fromPrice =
+            toString product.price
+
+        price =
+            if fromPrice == "0" then
+                ""
+            else
+                fromPrice
+    in
+        div
+            [ standardContainerStyle
+            , bufferedContentStyle
             ]
-            [ text product.name
-            , img
-                [ src (productsImageFolder ++ product.linkUrl)
-                , productIconStyle
+            [ a
+                [ linkStyle
+                , onClick (navigateToProduct product.pid)
                 ]
-                []
-            , text (toString product.price)
+                [ text product.name
+                , img
+                    [ src (productsImageFolder ++ product.linkUrl)
+                    , productIconStyle
+                    ]
+                    []
+                , text price
+                ]
             ]
-        ]
 
 
 navigateToProduct : Int -> Msg

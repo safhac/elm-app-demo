@@ -172,6 +172,17 @@ linkStyle =
         ]
 
 
+buyNowStyle : Attribute msg
+buyNowStyle =
+    css
+        [ backgroundColor (rgb 250 250 250)
+        , border3 (px 1) solid (hex "d3d3d3")
+        , cursor pointer
+        , margin2 (px 15) auto
+        , padding (px 15)
+        ]
+
+
 loginButtonStyle : Attribute msg
 loginButtonStyle =
     css

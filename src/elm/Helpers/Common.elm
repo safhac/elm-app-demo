@@ -15,7 +15,7 @@ initialProduct =
     { name = ""
     , pid = 0
     , price = 0
-    , linkUrl = ""
+    , linkUrl = "../spinner.gif"
     }
 
 
