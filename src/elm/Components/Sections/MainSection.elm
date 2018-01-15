@@ -5,9 +5,10 @@ import Html.Styled.Attributes exposing (css, href, src, id)
 import Html.Styled.Events exposing (onClick)
 import Types exposing (..)
 import Styles.Styles exposing (..)
+import Routing.Routes exposing (reverseRoute)
 
 
-renderMain : List Product -> Html msg
+renderMain : List Product -> Html Msg
 renderMain products =
     main_
         [ centeredTextStyle
@@ -16,7 +17,7 @@ renderMain products =
         [ mainArea products ]
 
 
-mainArea : List Product -> Html msg
+mainArea : List Product -> Html Msg
 mainArea products =
     div
         [ gridContainerStyle ]
@@ -36,8 +37,7 @@ renderProduct product =
         ]
         [ a
             [ href ""
-            , onClick
-                |> NavigateTo (ProductDetails product.pid)
+            , onClick (navigateToProduct product.pid)
             ]
             [ text product.name
             , img
@@ -48,6 +48,12 @@ renderProduct product =
             , text (toString product.price)
             ]
         ]
+
+
+navigateToProduct : Int -> Msg
+navigateToProduct pid =
+    reverseRoute (ProductDetails pid)
+        |> LinkTo
 
 
 renderStartPage : Html msg
