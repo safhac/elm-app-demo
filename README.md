@@ -1,9 +1,8 @@
 # Elm app demo 
-## using elm-webpack-starter
-## rtfeldman/elm-css
-## evancz/url-parser & elm-lang/navigation
-## ryanolsonx/elm-mock-http
-
+### rtfeldman/elm-css
+### evancz/url-parser & elm-lang/navigation
+### ryanolsonx/elm-mock-http
+### elm-webpack-starter
 
 ### About:
 A demo app with generic features of a commercial app
