@@ -4,21 +4,23 @@
 ### ryanolsonx/elm-mock-http
 ### elm-webpack-starter
 
-### About:
+
+## About:
 A demo app with generic features of a commercial app
 * Webpack
 * Elm Css
 * Routing
 * Json Decoding
 
-## User
+### User
 * Log in/out and registration
-## Product (Items/Posts)
+
+### Product (or Items/Posts)
 * Mock server calls and json decoding
 * Filtering and sorting operations
 
 
-### Install:
+## Install:
 ```
 git clone git@github.com:safhac/elm-app-demo.git my-elm-project
 cd my-elm-project
@@ -39,7 +41,7 @@ npm run reinstall
 *This does a clean (re)install of all npm and elm packages, plus a global elm install.*
 
 
-### Serve locally:
+## Serve locally:
 ```
 npm start
 ```
@@ -48,7 +50,7 @@ npm start
 * Browser will refresh automatically on any file changes..
 
 
-### Build & bundle for prod:
+## Build & bundle for prod:
 ```
 npm run build
 ```
