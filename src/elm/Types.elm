@@ -58,6 +58,11 @@ type alias State =
     }
 
 
+type LengthProperty
+    = Height
+    | Width
+
+
 type alias ProductID =
     Int
 

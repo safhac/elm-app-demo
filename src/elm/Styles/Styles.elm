@@ -2,14 +2,28 @@ module Styles.Styles exposing (..)
 
 import Css exposing (..)
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (css, href, src)
+import Html.Styled.Attributes exposing (css, href, src, property, style)
 
 
+{-| Responsive functions
+@docs responsive
+
+
+# Responsive functions
+
+-}
 topPanelHeight : Px
 topPanelHeight =
     (px 100)
 
 
+{-| Named styling
+@docs css
+
+
+# Named css classes
+
+-}
 standardContainerStyle : Attribute msg
 standardContainerStyle =
     css
@@ -54,21 +68,21 @@ productIconStyle =
         ]
 
 
+{-| Responsive content
+@docs Responsive
+
+
+# Responsive content
+
+-}
 logo : Html msg
 logo =
     img
         [ src "static/img/cow-35561_960_720.png"
         , css
             [ display inlineBlock
-            , height topPanelHeight
-            , width topPanelHeight
-            , border3 (px 1) solid (rgb 255 255 255)
-            , padding (px 15)
-            , hover
-                [ borderColor theme.primary
-                , border3 (px 1) solid (rgb 120 120 120)
-                , borderRadius (px 10)
-                ]
+            , margin2 auto (px 15)
+            , height (vmin 8)
             ]
         ]
         []
@@ -81,10 +95,9 @@ logInIcon =
         , css
             [ display inlineBlock
             , cursor pointer
-            , height (px 50)
-            , width (px 50)
-            , padding (px 15)
+            , margin2 auto (px 0)
             , opacity (num 0.3)
+            , height (vmax 6)
             , hover
                 [ opacity (num 1)
                 ]
@@ -93,12 +106,23 @@ logInIcon =
         []
 
 
-headerStyle =
-    css
+{-| Header css
+@docs Styles
+
+
+# Header styles
+
+-}
+headerStyles : List (Attribute msg)
+headerStyles =
+    [ css
         [ displayFlex
         , textAlign center
         , justifyContent spaceBetween
+        , height (vh 10)
+        , backgroundColor (hex "d3d3d3")
         ]
+    ]
 
 
 navStyle : Attribute msg
@@ -107,22 +131,23 @@ navStyle =
         [ listStyleType none
         , margin (px 0)
         , padding (px 0)
-        , lineHeight topPanelHeight
+        , fontSize (vmin 2)
+        , lineHeight (vh 10)
         ]
 
 
+inlineNavStyle : Attribute msg
 inlineNavStyle =
     css
         [ display inlineBlock
-        , width (px 100)
+        , width (vmin 10)
         ]
 
 
 navLinkStyle : Attribute msg
 navLinkStyle =
     css
-        [ padding2 (px 14) (px 16)
-        , cursor pointer
+        [ cursor pointer
         , hover
             [ color (rgb 250 250 250)
             , backgroundColor (rgb 50 25 60)
@@ -135,9 +160,8 @@ userPicStyle =
     css
         [ display inlineBlock
         , cursor pointer
-        , height (px 50)
-        , width (px 50)
-        , padding (px 15)
+        , margin2 auto (px 0)
+        , height (vmax 5)
         , opacity (num 0.3)
         , hover
             [ opacity (num 1)
@@ -147,18 +171,26 @@ userPicStyle =
 
 bannerStyle : Attribute msg
 bannerStyle =
-    css [ lineHeight topPanelHeight ]
+    css [ lineHeight (vmax 10) ]
+
+
+headingStyle : Attribute msg
+headingStyle =
+    css
+        [ fontSize (vmin 3)
+        , lineHeight (vh 10)
+        ]
 
 
 showLogin : Attribute msg
 showLogin =
     css
         [ opacity (num 0)
+        , position absolute
         , cursor pointer
         , top (px 0)
-        , position absolute
-        , width (px 100)
-        , height (px 150)
+        , width (vw 5)
+        , height (vmax 6)
         , alignItems flexEnd
         , displayFlex
         , justifyContent center
@@ -193,8 +225,21 @@ loginButtonStyle =
         ]
 
 
+{-| Theming
+@docs Styles
+
+
+# Theme styles
+
+-}
 theme : { secondary : Color, primary : Color }
 theme =
     { primary = hex "55af6a"
     , secondary = rgb 250 240 230
     }
+
+
+verticalCenterStyle =
+    css
+        [ margin2 auto (px 0)
+        ]

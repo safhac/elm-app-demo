@@ -75,7 +75,7 @@ renderProduct product =
 
 renderStartPage : Html Msg
 renderStartPage =
-    div
+    main_
         [ bufferedContentStyle ]
         [ h2 [] [ text "Welcome" ]
         , div
