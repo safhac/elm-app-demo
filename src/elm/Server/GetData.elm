@@ -10,7 +10,7 @@ config =
     MockHttp.config
         [ Get
             { url = "https://api/data/products"
-            , response = """[{"name":"Item 1","pid":1,"price":9.90,"linkUrl":"item01.jpeg"},{"name":"Item 2","pid":2,"price":19.90,"linkUrl":"item02.jpeg"},{"name":"Item 3","pid":3,"price":29.90,"linkUrl":"item03.jpeg"},{"name":"Item 4","pid":4,"price":39.90,"linkUrl":"item04.jpeg"},{"name":"Item 5","pid":5,"price":149.90,"linkUrl":"item05.jpeg"},{"name":"Item 6","pid":6,"price":529.90,"linkUrl":"item06.jpeg"}]"""
+            , response = """[{"name":"Clown","pid":1,"price":9.90,"linkUrl":"item01.jpeg"},{"name":"Special","pid":2,"price":19.90,"linkUrl":"item02.jpeg"},{"name":"Shoes","pid":3,"price":29.90,"linkUrl":"item03.jpeg"},{"name":"Stroller","pid":4,"price":39.90,"linkUrl":"item04.jpeg"},{"name":"Car","pid":5,"price":149.90,"linkUrl":"item05.jpeg"},{"name":"Hellicopter","pid":6,"price":529.90,"linkUrl":"item06.jpeg"}]"""
             , responseTime = 2500
             }
         ]

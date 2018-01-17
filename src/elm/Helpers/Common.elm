@@ -33,6 +33,7 @@ initialState : State
 initialState =
     { user = initialUser
     , currentPage = Home
+    , productUX = Name True
     }
 
 
@@ -49,6 +50,11 @@ initialUser =
 productsImageFolder : String
 productsImageFolder =
     "/static/img/products/"
+
+
+imageFolder : String
+imageFolder =
+    "/static/img/"
 
 
 attrToMsg : Page -> Msg

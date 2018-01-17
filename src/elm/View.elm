@@ -9,12 +9,12 @@ import Components.Sections.MainSection exposing (..)
 
 
 view : Model -> Html Msg
-view { products, state } =
+view model =
     div [ id "view", standardContainerStyle ]
-        [ renderHeader state
-        , case state.user.loginStatus of
+        [ renderHeader model.state
+        , case model.state.user.loginStatus of
             LoggedIn ->
-                renderMain state.currentPage products
+                renderMain model
 
             _ ->
                 renderStartPage

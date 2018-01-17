@@ -1,45 +1,73 @@
 module Components.Sections.MainSection exposing (..)
 
-import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a)
+import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a, button)
 import Html.Styled.Attributes exposing (css, href, src, id)
 import Html.Styled.Events exposing (onClick)
-import Types exposing (..)
+import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State, SortBy(..), X(..))
 import Styles.Styles exposing (..)
 import Routing.Routes exposing (reverseRoute)
 import Components.Sections.ProductDetails exposing (..)
 import Helpers.Common exposing (..)
-import Components.Pages.Orders exposing (..)
+import Components.Pages.AllPages exposing (..)
 
 
-renderMain : Page -> List Product -> Html Msg
-renderMain page products =
+renderMain : Model -> Html Msg
+renderMain model =
     main_
         [ centeredTextStyle
         , standardContainerStyle
         ]
-        [ case page of
+        [ case model.state.currentPage of
             Home ->
                 renderStartPage
 
             ProductDetails pid ->
-                getProductById products pid
+                getProductById model.products pid
                     |> renderProductDetails
 
+            MyProfile ->
+                renderProfile model.state.user
+
+            Products ->
+                mainArea model.products model.state
+
             _ ->
-                mainArea products
+                renderPage model.state.currentPage
         ]
 
 
-mainArea : List Product -> Html Msg
-mainArea products =
-    div
-        [ id "gridContainer" ]
-        (List.map
-            (\p ->
-                renderProduct p
-            )
-            products
-        )
+mainArea : List Product -> State -> Html Msg
+mainArea products state =
+    let
+        sortedProducts =
+            orderProductList products state.productUX
+    in
+        div []
+            [ div [ sortFilterContainerStyle ]
+                [ div [ leftFloatStyle ] [ text "filter" ]
+
+                -- , input
+                --         [ type_ "range"
+                --         , Html.Attributes.min "0"
+                --         , Html.Attributes.max "500"
+                --         , value minEntryFee
+                --         , value maxEntryFee
+                --         , onInput (\entryFee -> FilterCompetitionListBy (ByFeeRange ( minEntryFee, maxEntryFee, entryFee )))
+                , div [ leftFloatStyle, sortStyle ]
+                    [ button [ sortButtonStyle, onClick (SortProducts (Price True)) ] [ text "Price" ]
+                    , button [ sortButtonStyle, onClick (SortProducts (Name True)) ] [ text "Name" ]
+                    , button [ sortButtonStyle, onClick (SortProducts (Price False)) ] [ text "Category" ]
+                    ]
+                ]
+            , div
+                [ id "gridContainer" ]
+                (List.map
+                    (\product ->
+                        renderProduct product
+                    )
+                    sortedProducts
+                )
+            ]
 
 
 renderProduct : Product -> Html Msg
@@ -147,3 +175,47 @@ productNotFound =
     , price = 0
     , linkUrl = ""
     }
+
+
+orderProductList : List Product -> SortBy -> List Product
+orderProductList unSortedList sortProductsBy =
+    let
+        s =
+            Debug.log "order" sortProductsBy
+    in
+        case sortProductsBy of
+            Name True ->
+                List.sortBy .name unSortedList
+
+            Name False ->
+                List.sortBy .name unSortedList
+
+            Price True ->
+                List.sortBy .price unSortedList
+
+            Price False ->
+                List.sortBy .price unSortedList
+
+            Category True ->
+                List.sortBy .name unSortedList
+
+            Category False ->
+                List.sortBy .name unSortedList
+
+            Rating True ->
+                List.sortBy .name unSortedList
+
+            Rating False ->
+                List.sortBy .name unSortedList
+
+
+flippedComparison a b =
+    case compare a b of
+        LT ->
+            GT
+
+        EQ ->
+            EQ
+
+        GT ->
+            LT

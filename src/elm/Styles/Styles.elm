@@ -3,6 +3,7 @@ module Styles.Styles exposing (..)
 import Css exposing (..)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (css, href, src, property, style)
+import Helpers.Common exposing (imageFolder)
 
 
 {-| Responsive functions
@@ -78,7 +79,9 @@ productIconStyle =
 logo : Html msg
 logo =
     img
-        [ src "static/img/cow-35561_960_720.png"
+        [ imageFolder
+            ++ "cow-35561_960_720.png"
+            |> src
         , css
             [ display inlineBlock
             , margin2 auto (px 15)
@@ -91,7 +94,9 @@ logo =
 logInIcon : Html msg
 logInIcon =
     img
-        [ src "static/img/login.jpeg"
+        [ imageFolder
+            ++ "login.jpeg"
+            |> src
         , css
             [ display inlineBlock
             , cursor pointer
@@ -179,6 +184,37 @@ headingStyle =
     css
         [ fontSize (vmin 3)
         , lineHeight (vh 10)
+        ]
+
+
+sortFilterContainerStyle : Attribute msg
+sortFilterContainerStyle =
+    css
+        [ height (px 50)
+        , lineHeight (px 50)
+        , width auto
+        ]
+
+
+leftFloatStyle =
+    css
+        [ float left
+        , width (pct 50)
+        ]
+
+
+sortStyle =
+    css
+        [ displayFlex
+        , justifyContent spaceBetween
+        ]
+
+
+sortButtonStyle =
+    css
+        [ flex (num 1)
+        , lineHeight (pct 100)
+        , margin2 (px 15) (px 0)
         ]
 
 

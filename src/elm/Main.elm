@@ -7,7 +7,7 @@ import UrlParser exposing (..)
 import MockHttp exposing (Endpoint(..))
 import Routing.Routes exposing (..)
 import View exposing (..)
-import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State)
+import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State, SortBy(..))
 import Server.GetData exposing (config, getProducts)
 import Helpers.Common exposing (..)
 
@@ -117,6 +117,16 @@ update msg model =
                 |> LinkTo
                 |> msgToCmdMsg
             )
+
+        SortProducts sortBy ->
+            let
+                olState =
+                    model.state
+
+                newState =
+                    { olState | productUX = sortBy }
+            in
+                { model | state = newState } ! []
 
 
 msgToCmdMsg : Msg -> Cmd Msg
