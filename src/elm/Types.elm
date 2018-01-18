@@ -15,7 +15,7 @@ type Msg
     | Login
     | ProductsFetched (Result Http.Error (List Product))
     | Ordering Product
-    | SortProducts SortBy
+    | SortProducts ProductsUXState
 
 
 type alias Product =
@@ -61,7 +61,7 @@ type alias State =
 
 
 type alias ProductsUXState =
-    SortBy
+    ( SortBy, Bool )
 
 
 type LengthProperty
@@ -70,15 +70,10 @@ type LengthProperty
 
 
 type SortBy
-    = Price Bool
-    | Name Bool
-    | Category Bool
-    | Rating Bool
-
-
-type X
-    = Up
-    | Down
+    = Price
+    | Name
+    | Category
+    | Rating
 
 
 type alias ProductID =

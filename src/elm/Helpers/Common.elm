@@ -33,7 +33,7 @@ initialState : State
 initialState =
     { user = initialUser
     , currentPage = Home
-    , productUX = Name True
+    , productUX = ( Name, True )
     }
 
 

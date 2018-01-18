@@ -3,7 +3,7 @@ module Components.Sections.MainSection exposing (..)
 import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a, button)
 import Html.Styled.Attributes exposing (css, href, src, id)
 import Html.Styled.Events exposing (onClick)
-import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State, SortBy(..), X(..))
+import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State, SortBy(..))
 import Styles.Styles exposing (..)
 import Routing.Routes exposing (reverseRoute)
 import Components.Sections.ProductDetails exposing (..)
@@ -39,8 +39,11 @@ renderMain model =
 mainArea : List Product -> State -> Html Msg
 mainArea products state =
     let
+        ( column, dir ) =
+            state.productUX
+
         sortedProducts =
-            orderProductList products state.productUX
+            orderProductList products column (not dir)
     in
         div []
             [ div [ sortFilterContainerStyle ]
@@ -54,9 +57,9 @@ mainArea products state =
                 --         , value maxEntryFee
                 --         , onInput (\entryFee -> FilterCompetitionListBy (ByFeeRange ( minEntryFee, maxEntryFee, entryFee )))
                 , div [ leftFloatStyle, sortStyle ]
-                    [ button [ sortButtonStyle, onClick (SortProducts (Price True)) ] [ text "Price" ]
-                    , button [ sortButtonStyle, onClick (SortProducts (Name True)) ] [ text "Name" ]
-                    , button [ sortButtonStyle, onClick (SortProducts (Price False)) ] [ text "Category" ]
+                    [ button [ sortButtonStyle, onClick (SortProducts ( Price, not dir )) ] [ text "Price" ]
+                    , button [ sortButtonStyle, onClick (SortProducts ( Name, not dir )) ] [ text "Name" ]
+                    , button [ sortButtonStyle, onClick (SortProducts ( Price, not dir )) ] [ text "Category" ]
                     ]
                 ]
             , div
@@ -177,36 +180,29 @@ productNotFound =
     }
 
 
-orderProductList : List Product -> SortBy -> List Product
-orderProductList unSortedList sortProductsBy =
+orderProductList : List Product -> SortBy -> Bool -> List Product
+orderProductList unSortedList sortProductsBy dir =
     let
-        s =
-            Debug.log "order" sortProductsBy
+        sortedList =
+            case sortProductsBy of
+                Name ->
+                    List.sortBy .name unSortedList
+
+                Price ->
+                    List.sortBy .price unSortedList
+
+                Category ->
+                    List.sortBy .name unSortedList
+
+                Rating ->
+                    List.sortBy .name unSortedList
     in
-        case sortProductsBy of
-            Name True ->
-                List.sortBy .name unSortedList
+        case dir of
+            True ->
+                sortedList
 
-            Name False ->
-                List.sortBy .name unSortedList
-
-            Price True ->
-                List.sortBy .price unSortedList
-
-            Price False ->
-                List.sortBy .price unSortedList
-
-            Category True ->
-                List.sortBy .name unSortedList
-
-            Category False ->
-                List.sortBy .name unSortedList
-
-            Rating True ->
-                List.sortBy .name unSortedList
-
-            Rating False ->
-                List.sortBy .name unSortedList
+            False ->
+                List.reverse sortedList
 
 
 flippedComparison a b =
