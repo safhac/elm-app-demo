@@ -81,23 +81,7 @@ update msg model =
                         userWatchedProduct =
                             case page of
                                 ProductDetails pid ->
-                                    let
-                                        u =
-                                            model.state.user
-
-                                        p =
-                                            getProductById model.products pid
-
-                                        newDict =
-                                            Dict.insert
-                                                pid
-                                                p
-                                                u.lastViewed
-
-                                        nu =
-                                            { u | lastViewed = newDict }
-                                    in
-                                        nu
+                                    updateUserWatchList model.state.user model.products pid
 
                                 _ ->
                                     model.state.user

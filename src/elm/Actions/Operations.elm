@@ -1,6 +1,7 @@
 module Actions.Operations exposing (..)
 
-import Types exposing (ProductID, SortBy(..), Product, ProductsFilterBy(..))
+import Dict
+import Types exposing (User, ProductID, SortBy(..), Product, ProductsFilterBy(..))
 import Helpers.Common exposing (initialProduct)
 
 
@@ -149,3 +150,21 @@ productNotFound =
     , price = 0
     , linkUrl = ""
     }
+
+
+updateUserWatchList : User -> List Product -> ProductID -> User
+updateUserWatchList user products pid =
+    let
+        p =
+            getProductById products pid
+
+        newDict2 =
+            Dict.insert
+                pid
+                p
+                user.lastViewed
+
+        newUser =
+            { user | lastViewed = newDict2 }
+    in
+        newUser
