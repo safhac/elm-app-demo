@@ -7,8 +7,21 @@ import UrlParser exposing (..)
 import MockHttp exposing (Endpoint(..))
 import Routing.Routes exposing (..)
 import View exposing (..)
-import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State, SortBy(..))
+import Types
+    exposing
+        ( LoginStatus(..)
+        , User
+        , Product
+        , Model
+        , Msg(..)
+        , Page(..)
+        , ProductID
+        , State
+        , SortBy(..)
+        , ProductsFilterBy(..)
+        )
 import Server.GetData exposing (config, getProducts)
+import Actions.Operations exposing (..)
 import Helpers.Common exposing (..)
 
 
@@ -123,10 +136,45 @@ update msg model =
                 olState =
                     model.state
 
+                dir =
+                    Tuple.second olState.sorting
+
                 newState =
-                    { olState | productUX = sortBy }
+                    { olState | sorting = ( sortBy, not dir ) }
+
+                sortedList =
+                    sortListBy model.products sortBy (not dir)
             in
-                { model | state = newState } ! []
+                ( { model
+                    | state = newState
+                    , products = sortedList
+                  }
+                , Cmd.none
+                )
+
+        FilterProducts filterBy ->
+            case filterBy of
+                ByMinPriceRange minprice ->
+                    let
+                        olState =
+                            model.state
+
+                        newState =
+                            { olState | filtering = Just (ByMinPriceRange minprice) }
+
+                        filteredProds =
+                            filterList filterBy model.products
+                    in
+                        { model
+                            | state = newState
+                            , products = filteredProds
+                        }
+                            ! []
+
+                -- ByMinPriceRange (Err error) ->
+                --     model ! []
+                ByCategoryName name ->
+                    model ! []
 
 
 msgToCmdMsg : Msg -> Cmd Msg

@@ -9,13 +9,13 @@ type alias Model =
     }
 
 
-type Msg
-    = LinkTo String
-    | NavigateTo (Maybe Page)
-    | Login
-    | ProductsFetched (Result Http.Error (List Product))
-    | Ordering Product
-    | SortProducts ProductsUXState
+type alias User =
+    { loginStatus : LoginStatus
+    , name : String
+    , id : Int
+    , email : String
+    , avatar : String
+    }
 
 
 type alias Product =
@@ -26,13 +26,22 @@ type alias Product =
     }
 
 
-type alias User =
-    { loginStatus : LoginStatus
-    , name : String
-    , id : Int
-    , email : String
-    , avatar : String
+type alias State =
+    { currentPage : Page
+    , user : User
+    , sorting : ( SortBy, Bool )
+    , filtering : Maybe ProductsFilterBy
     }
+
+
+type Msg
+    = LinkTo String
+    | NavigateTo (Maybe Page)
+    | Login
+    | ProductsFetched (Result Http.Error (List Product))
+    | Ordering Product
+    | SortProducts SortBy
+    | FilterProducts ProductsFilterBy
 
 
 type LoginStatus
@@ -53,17 +62,6 @@ type Page
     | UrlNotFound
 
 
-type alias State =
-    { currentPage : Page
-    , user : User
-    , productUX : ProductsUXState
-    }
-
-
-type alias ProductsUXState =
-    ( SortBy, Bool )
-
-
 type LengthProperty
     = Height
     | Width
@@ -74,6 +72,15 @@ type SortBy
     | Name
     | Category
     | Rating
+
+
+type ProductsFilterBy
+    = ByMinPriceRange String --(Result String Float)
+    | ByCategoryName String
+
+
+type alias ResStrFloat =
+    Result String Float
 
 
 type alias ProductID =

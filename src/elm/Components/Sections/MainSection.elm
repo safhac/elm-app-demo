@@ -1,14 +1,15 @@
 module Components.Sections.MainSection exposing (..)
 
-import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a, button)
-import Html.Styled.Attributes exposing (css, href, src, id)
-import Html.Styled.Events exposing (onClick)
-import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State, SortBy(..))
+import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a, button, input, label)
+import Html.Styled.Attributes exposing (css, href, src, id, type_, min, max, value)
+import Html.Styled.Events exposing (onClick, onInput)
+import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State, SortBy(..), ProductsFilterBy(..))
 import Styles.Styles exposing (..)
 import Routing.Routes exposing (reverseRoute)
 import Components.Sections.ProductDetails exposing (..)
 import Helpers.Common exposing (..)
 import Components.Pages.AllPages exposing (..)
+import Actions.Operations exposing (getMinMaxPrices)
 
 
 renderMain : Model -> Html Msg
@@ -39,27 +40,33 @@ renderMain model =
 mainArea : List Product -> State -> Html Msg
 mainArea products state =
     let
-        ( column, dir ) =
-            state.productUX
+        ( minPrice, maxPrice ) =
+            getMinMaxPrices products
 
-        sortedProducts =
-            orderProductList products column (not dir)
+        minPriceString =
+            toString minPrice
+
+        maxPriceString =
+            toString maxPrice
     in
         div []
             [ div [ sortFilterContainerStyle ]
-                [ div [ leftFloatStyle ] [ text "filter" ]
-
-                -- , input
-                --         [ type_ "range"
-                --         , Html.Attributes.min "0"
-                --         , Html.Attributes.max "500"
-                --         , value minEntryFee
-                --         , value maxEntryFee
-                --         , onInput (\entryFee -> FilterCompetitionListBy (ByFeeRange ( minEntryFee, maxEntryFee, entryFee )))
+                [ div [ leftFloatStyle ]
+                    [ text "filter"
+                    , input
+                        [ type_ "range"
+                        , Html.Styled.Attributes.min minPriceString
+                        , Html.Styled.Attributes.max maxPriceString
+                        , value minPriceString
+                        , onInput (\minProdPrice -> FilterProducts (ByMinPriceRange minProdPrice))
+                        ]
+                        []
+                    , text minPriceString
+                    ]
                 , div [ leftFloatStyle, sortStyle ]
-                    [ button [ sortButtonStyle, onClick (SortProducts ( Price, not dir )) ] [ text "Price" ]
-                    , button [ sortButtonStyle, onClick (SortProducts ( Name, not dir )) ] [ text "Name" ]
-                    , button [ sortButtonStyle, onClick (SortProducts ( Price, not dir )) ] [ text "Category" ]
+                    [ button [ sortButtonStyle, onClick (SortProducts Price) ] [ text "Price" ]
+                    , button [ sortButtonStyle, onClick (SortProducts Name) ] [ text "Name" ]
+                    , button [ sortButtonStyle, onClick (SortProducts Price) ] [ text "Category" ]
                     ]
                 ]
             , div
@@ -68,7 +75,7 @@ mainArea products state =
                     (\product ->
                         renderProduct product
                     )
-                    sortedProducts
+                    products
                 )
             ]
 
@@ -178,40 +185,3 @@ productNotFound =
     , price = 0
     , linkUrl = ""
     }
-
-
-orderProductList : List Product -> SortBy -> Bool -> List Product
-orderProductList unSortedList sortProductsBy dir =
-    let
-        sortedList =
-            case sortProductsBy of
-                Name ->
-                    List.sortBy .name unSortedList
-
-                Price ->
-                    List.sortBy .price unSortedList
-
-                Category ->
-                    List.sortBy .name unSortedList
-
-                Rating ->
-                    List.sortBy .name unSortedList
-    in
-        case dir of
-            True ->
-                sortedList
-
-            False ->
-                List.reverse sortedList
-
-
-flippedComparison a b =
-    case compare a b of
-        LT ->
-            GT
-
-        EQ ->
-            EQ
-
-        GT ->
-            LT

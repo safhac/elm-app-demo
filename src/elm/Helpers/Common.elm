@@ -33,7 +33,8 @@ initialState : State
 initialState =
     { user = initialUser
     , currentPage = Home
-    , productUX = ( Name, True )
+    , sorting = ( Name, True )
+    , filtering = Nothing
     }
 
 
