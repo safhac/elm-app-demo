@@ -1,5 +1,6 @@
 module Components.Pages.AllPages exposing (..)
 
+import Dict
 import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a, p)
 import Html.Styled.Attributes exposing (css, href, src, id, class)
 import Html.Styled.Events exposing (onClick)
@@ -47,21 +48,25 @@ renderProfile user =
         ]
 
 
-myLatestProducts : List Product -> Html Msg
+myLatestProducts : Dict.Dict Int Product -> Html Msg
 myLatestProducts latest =
     let
         lastViewd =
-            if (List.length latest > 0) then
-                div []
-                    [ p [] [ text "products you viewed lately" ]
-                    , div []
-                        (List.map
-                            (\product -> renderProduct product)
-                            latest
-                        )
-                    ]
-            else
+            if (Dict.isEmpty latest) then
                 div [] []
+            else
+                let
+                    list =
+                        Dict.values latest
+                in
+                    div []
+                        [ p [] [ text "products you viewed lately" ]
+                        , div []
+                            (List.map
+                                (\product -> renderProduct product)
+                                list
+                            )
+                        ]
     in
         lastViewd
 

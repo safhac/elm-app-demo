@@ -1,6 +1,8 @@
 module Main exposing (..)
 
 import Task exposing (succeed, perform)
+import Set
+import Dict
 import Html.Styled exposing (..)
 import Navigation exposing (Location, newUrl)
 import UrlParser exposing (..)
@@ -86,8 +88,14 @@ update msg model =
                                         p =
                                             getProductById model.products pid
 
+                                        newDict =
+                                            Dict.insert
+                                                pid
+                                                p
+                                                u.lastViewed
+
                                         nu =
-                                            { u | lastViewed = p :: u.lastViewed }
+                                            { u | lastViewed = newDict }
                                     in
                                         nu
 

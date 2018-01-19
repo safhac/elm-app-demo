@@ -1,6 +1,7 @@
 module Types exposing (..)
 
 import Http
+import Dict
 
 
 type alias Model =
@@ -15,7 +16,7 @@ type alias User =
     , id : Int
     , email : String
     , avatar : String
-    , lastViewed : List Product
+    , lastViewed : Dict.Dict Int Product
     }
 
 
