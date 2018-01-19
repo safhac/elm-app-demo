@@ -109,13 +109,9 @@ update msg model =
                 )
 
         ProductsFetched (Ok result) ->
-            let
-                p =
-                    Debug.log "p " result
-            in
-                ( { model | products = result }
-                , Cmd.none
-                )
+            ( { model | products = result }
+            , Cmd.none
+            )
 
         ProductsFetched (Err error) ->
             let
@@ -131,7 +127,7 @@ update msg model =
                 |> msgToCmdMsg
             )
 
-        SortProducts sortBy ->
+        SortProducts sortingBy ->
             let
                 olState =
                     model.state
@@ -140,10 +136,10 @@ update msg model =
                     Tuple.second olState.sorting
 
                 newState =
-                    { olState | sorting = ( sortBy, not dir ) }
+                    { olState | sorting = ( sortingBy, not dir ) }
 
                 sortedList =
-                    sortListBy model.products sortBy (not dir)
+                    sortListBy model.products sortingBy (not dir)
             in
                 ( { model
                     | state = newState
@@ -154,27 +150,31 @@ update msg model =
 
         FilterProducts filterBy ->
             case filterBy of
-                ByMinPriceRange minprice ->
+                ByPriceRange minprice maxprice ->
                     let
                         olState =
                             model.state
 
                         newState =
-                            { olState | filtering = Just (ByMinPriceRange minprice) }
-
-                        filteredProds =
-                            filterList filterBy model.products
+                            { olState | filtering = Just (ByPriceRange minprice maxprice) }
                     in
                         { model
                             | state = newState
-                            , products = filteredProds
                         }
                             ! []
 
-                -- ByMinPriceRange (Err error) ->
-                --     model ! []
                 ByCategoryName name ->
                     model ! []
+
+        ResetProductsFilter ->
+            let
+                olState =
+                    model.state
+
+                newState =
+                    { olState | filtering = Nothing }
+            in
+                { model | state = newState } ! []
 
 
 msgToCmdMsg : Msg -> Cmd Msg

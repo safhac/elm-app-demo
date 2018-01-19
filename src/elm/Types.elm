@@ -42,6 +42,7 @@ type Msg
     | Ordering Product
     | SortProducts SortBy
     | FilterProducts ProductsFilterBy
+    | ResetProductsFilter
 
 
 type LoginStatus
@@ -75,7 +76,7 @@ type SortBy
 
 
 type ProductsFilterBy
-    = ByMinPriceRange String --(Result String Float)
+    = ByPriceRange String String
     | ByCategoryName String
 
 

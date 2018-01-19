@@ -4,17 +4,20 @@ import Types exposing (SortBy(..), Product, ProductsFilterBy(..))
 import Helpers.Common exposing (initialProduct)
 
 
-filterList : ProductsFilterBy -> List Product -> List Product
-filterList filter list =
-    case filter of
-        ByMinPriceRange minprice ->
+filterList : Maybe ProductsFilterBy -> List Product -> List Product
+filterList maybeFilter list =
+    case maybeFilter of
+        Nothing ->
+            list
+
+        Just (ByPriceRange minprice maxprice) ->
             let
                 filteredList =
-                    filterByPrice list minprice
+                    filterByPrice list minprice maxprice
             in
                 filteredList
 
-        ByCategoryName category ->
+        Just (ByCategoryName category) ->
             let
                 filteredList =
                     filterByCategory list category
@@ -22,10 +25,10 @@ filterList filter list =
                 filteredList
 
 
-filterByPrice : List Product -> String -> List Product
-filterByPrice list minprice =
+filterByPrice : List Product -> String -> String -> List Product
+filterByPrice list minprice maxprice =
     let
-        priceFloat =
+        minPriceFloat =
             case String.toFloat minprice of
                 Ok res ->
                     res
@@ -33,8 +36,16 @@ filterByPrice list minprice =
                 Err err ->
                     0
 
+        maxPriceFloat =
+            case String.toFloat maxprice of
+                Ok mres ->
+                    mres
+
+                Err err ->
+                    0
+
         filteredList =
-            List.filter (\p -> p.price > priceFloat) list
+            List.filter (\p -> p.price > minPriceFloat && p.price < maxPriceFloat) list
     in
         filteredList
 

@@ -1,6 +1,6 @@
 module Components.Sections.MainSection exposing (..)
 
-import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a, button, input, label)
+import Html.Styled exposing (Html, div, text, main_, img, h2, h3, a, button, input, label, p)
 import Html.Styled.Attributes exposing (css, href, src, id, type_, min, max, value)
 import Html.Styled.Events exposing (onClick, onInput)
 import Types exposing (LoginStatus(..), User, Product, Model, Msg(..), Page(..), ProductID, State, SortBy(..), ProductsFilterBy(..))
@@ -9,7 +9,7 @@ import Routing.Routes exposing (reverseRoute)
 import Components.Sections.ProductDetails exposing (..)
 import Helpers.Common exposing (..)
 import Components.Pages.AllPages exposing (..)
-import Actions.Operations exposing (getMinMaxPrices)
+import Actions.Operations exposing (filterList, getMinMaxPrices)
 
 
 renderMain : Model -> Html Msg
@@ -40,28 +40,55 @@ renderMain model =
 mainArea : List Product -> State -> Html Msg
 mainArea products state =
     let
+        filteredProds =
+            filterList state.filtering products
+
         ( minPrice, maxPrice ) =
             getMinMaxPrices products
+
+        ( currMinPrice, currMaxPrice ) =
+            getMinMaxPrices filteredProds
 
         minPriceString =
             toString minPrice
 
         maxPriceString =
-            toString maxPrice
+            toString (maxPrice + 100)
+
+        currMinPriceString =
+            toString currMinPrice
+
+        currMaxPriceString =
+            toString currMaxPrice
+
+        filterText =
+            currMinPriceString ++ " to " ++ currMaxPriceString
     in
         div []
             [ div [ sortFilterContainerStyle ]
                 [ div [ leftFloatStyle ]
-                    [ text "filter"
-                    , input
-                        [ type_ "range"
-                        , Html.Styled.Attributes.min minPriceString
-                        , Html.Styled.Attributes.max maxPriceString
-                        , value minPriceString
-                        , onInput (\minProdPrice -> FilterProducts (ByMinPriceRange minProdPrice))
+                    [ p [ onClick ResetProductsFilter ]
+                        [ button [] [ text "Reset" ]
+                        , text filterText
                         ]
-                        []
-                    , text minPriceString
+                    , p []
+                        [ input
+                            [ type_ "range"
+                            , Html.Styled.Attributes.min "0"
+                            , Html.Styled.Attributes.max maxPriceString
+                            , value currMinPriceString
+                            , onInput (\minProdPrice -> FilterProducts (ByPriceRange minProdPrice maxPriceString))
+                            ]
+                            []
+                        , input
+                            [ type_ "range"
+                            , Html.Styled.Attributes.min minPriceString
+                            , Html.Styled.Attributes.max maxPriceString
+                            , value currMaxPriceString
+                            , onInput (\maxProdPrice -> FilterProducts (ByPriceRange "0" maxProdPrice))
+                            ]
+                            []
+                        ]
                     ]
                 , div [ leftFloatStyle, sortStyle ]
                     [ button [ sortButtonStyle, onClick (SortProducts Price) ] [ text "Price" ]
@@ -75,7 +102,7 @@ mainArea products state =
                     (\product ->
                         renderProduct product
                     )
-                    products
+                    filteredProds
                 )
             ]
 
