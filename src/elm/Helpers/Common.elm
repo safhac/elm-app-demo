@@ -45,6 +45,7 @@ initialUser =
     , id = 836590
     , email = "john@google.com"
     , avatar = "head-659652_960_720.png"
+    , lastViewed = []
     }
 
 

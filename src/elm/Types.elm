@@ -15,6 +15,7 @@ type alias User =
     , id : Int
     , email : String
     , avatar : String
+    , lastViewed : List Product
     }
 
 

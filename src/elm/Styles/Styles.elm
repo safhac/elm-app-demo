@@ -174,6 +174,13 @@ userPicStyle =
         ]
 
 
+profilePicStyle : Attribute msg
+profilePicStyle =
+    css
+        [ height (px 300)
+        ]
+
+
 bannerStyle : Attribute msg
 bannerStyle =
     css [ lineHeight (vmax 10) ]

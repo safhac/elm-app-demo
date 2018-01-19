@@ -76,8 +76,29 @@ update msg model =
                         oldState =
                             model.state
 
+                        userWatchedProduct =
+                            case page of
+                                ProductDetails pid ->
+                                    let
+                                        u =
+                                            model.state.user
+
+                                        p =
+                                            getProductById model.products pid
+
+                                        nu =
+                                            { u | lastViewed = p :: u.lastViewed }
+                                    in
+                                        nu
+
+                                _ ->
+                                    model.state.user
+
                         newState =
-                            { oldState | currentPage = page }
+                            { oldState
+                                | user = userWatchedProduct
+                                , currentPage = page
+                            }
                     in
                         ( { model | state = newState }, Cmd.none )
 
