@@ -71,10 +71,16 @@ update msg model =
             case maybePage of
                 Nothing ->
                     { model | state = initialState }
-                        ! [ Cmd.none ]
+                        ! [ reverseRoute UrlNotFound
+                                |> LinkTo
+                                |> msgToCmdMsg
+                          ]
 
                 Just page ->
                     let
+                        p =
+                            Debug.log "page" page
+
                         oldState =
                             model.state
 

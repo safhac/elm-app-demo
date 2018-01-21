@@ -2,8 +2,10 @@ module Styles.Styles exposing (..)
 
 import Css exposing (..)
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (css, href, src, property, style)
+import Html.Styled.Attributes exposing (css, href, src, property, style, alt, title)
 import Helpers.Common exposing (imageFolder)
+import Html.Styled.Events exposing (onClick)
+import Types exposing (Msg(..))
 
 
 {-| Responsive functions
@@ -76,16 +78,20 @@ productIconStyle =
 # Responsive content
 
 -}
-logo : Html msg
+logo : Html Msg
 logo =
     img
-        [ imageFolder
+        [ onClick (LinkTo <| "badlink")
+        , imageFolder
             ++ "cow-35561_960_720.png"
             |> src
+        , alt "broken link"
+        , title "broken link"
         , css
             [ display inlineBlock
             , margin2 auto (px 15)
             , height (vmin 8)
+            , cursor pointer
             ]
         ]
         []
@@ -231,9 +237,9 @@ showLogin =
         [ opacity (num 0)
         , position absolute
         , cursor pointer
-        , top (px 0)
+        , top (px 80)
         , width (vw 5)
-        , height (vmax 6)
+        , height (vmax 2)
         , alignItems flexEnd
         , displayFlex
         , justifyContent center

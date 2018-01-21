@@ -82,10 +82,6 @@ type ProductsFilterBy
     | ByCategoryName String
 
 
-type alias ResStrFloat =
-    Result String Float
-
-
 type alias ProductID =
     Int
 

@@ -52,6 +52,9 @@ parseLocation location =
     let
         parsedRoute =
             parsePath route location
+
+        p =
+            Debug.log "parseLocation " parsedRoute
     in
         parsedRoute
             |> NavigateTo

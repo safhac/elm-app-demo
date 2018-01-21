@@ -100,3 +100,22 @@ renderProduct product =
                 , text price
                 ]
             ]
+
+
+
+-- updateUserName : User -> String -> Html Msg
+-- updateUserName user name =
+--     let
+--         newUser =
+--             { user | name = name }
+--     in
+--         div
+--             [ standardContainerStyle
+--             , bufferedContentStyle
+--             ]
+--             [ a
+--                 [ linkStyle
+--                 , onClick (UpdateUserProfile newUser)
+--                 ]
+--             , text "Update"
+--             ]

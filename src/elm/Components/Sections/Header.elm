@@ -39,10 +39,9 @@ renderUserIcon user =
             [ verticalCenterStyle
             ]
             [ img
-                [ id "userIcon"
+                [ userPicStyle
+                , id "userIcon"
                 , src path
-                , userPicStyle
-                , onClick link
                 ]
                 []
             , div
@@ -51,7 +50,7 @@ renderUserIcon user =
                 ]
                 [ a
                     [ loginButtonStyle
-                    , onClick Login
+                    , onClick link
                     ]
                     [ message ]
                 ]

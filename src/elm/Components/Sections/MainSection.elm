@@ -14,27 +14,40 @@ import Actions.Operations exposing (..)
 
 renderMain : Model -> Html Msg
 renderMain model =
-    main_
-        [ centeredTextStyle
-        , standardContainerStyle
-        ]
-        [ case model.state.currentPage of
-            Home ->
-                renderStartPage
+    let
+        userLoggedIn =
+            model.state.user.loginStatus == LoggedIn
+    in
+        main_
+            [ centeredTextStyle
+            , standardContainerStyle
+            ]
+            [ case model.state.currentPage of
+                Home ->
+                    renderStartPage
 
-            ProductDetails pid ->
-                getProductById model.products pid
-                    |> renderProductDetails
+                ProductDetails pid ->
+                    getProductById model.products pid
+                        |> renderProductDetails
 
-            MyProfile ->
-                renderProfile model.state.user
+                MyProfile ->
+                    if userLoggedIn then
+                        renderProfile model.state.user
+                    else
+                        renderPage Register
 
-            Products ->
-                mainArea model.products model.state
+                Products ->
+                    if userLoggedIn then
+                        mainArea model.products model.state
+                    else
+                        renderStartPage
 
-            _ ->
-                renderPage model.state.currentPage
-        ]
+                UrlNotFound ->
+                    renderPage UrlNotFound
+
+                _ ->
+                    renderPage model.state.currentPage
+            ]
 
 
 mainArea : List Product -> State -> Html Msg
@@ -116,7 +129,7 @@ renderStartPage =
             [ bufferedContentStyle
             ]
             [ h3 []
-                [ a [ linkStyle, onClick Login ] [ text "Have an account? " ]
+                [ text "Have an account? "
                 , a
                     [ linkStyle, onClick goToRegister ]
                     [ text "Register to enjoy the benefits" ]

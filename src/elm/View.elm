@@ -12,10 +12,5 @@ view : Model -> Html Msg
 view model =
     div [ id "view", standardContainerStyle ]
         [ renderHeader model.state
-        , case model.state.user.loginStatus of
-            LoggedIn ->
-                renderMain model
-
-            _ ->
-                renderStartPage
+        , renderMain model
         ]
